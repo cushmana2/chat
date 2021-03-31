@@ -12,18 +12,25 @@
   </head>
   <body>
 	<div class='container overflow-auto'>
-		<div class='row'>
-			<div class='col-md-9'>
-				<h1 class='display-4'>Room #1</h1>
+		<div class='row p-3 mb-2 bg-light'>
+			<div class='col-md-9' >
+				<h1 class='display-4'>
+					<select name="rooms" id="rooms">
+					<option value="room 1">Room #1</option>
+					<option value="room2">Room #2</option>
+					<option value="room3">Room #3</option>
+					<option value="room4">Room #4</option>
+					</select>
+				</h1>
 			</div>
-			<div class='col-md-3'>
+			<div class='col-md-3 border rounded-lg'>
 				<h1 class='display-4'>Users</h1>
 			</div>
 		</div>
-		<div class='row'>
-			<div class='overflow-auto col-md-9 border border-dark rounded-lg' style="height: 50vh;">
+		<div class='row p-3 mb-2 bg-light'>
+			<div class='overflow-auto col-md-9 border border-info rounded-lg' style="height: 50vh;">
 				<ul class='list-group list-group-flush'>
-					<li class='list-group-item'>[12:06]User328934: blah blah blah</li>
+					<li class='list-group-item primary'>[12:06]User328934: blah blah blah</li>
 					<li class='list-group-item'>[12:06]User3234: blah blah blah blah</li>
 					<li class='list-group-item'>[12:07]User32893: blah blah</li>
 					<li class='list-group-item'>[12:08]User8934: blah blah blah</li>
@@ -38,7 +45,8 @@
 					<li class='list-group-item'>[12:08]User8934: blah blah blah</li>				
 				</ul>
 			</div>
-			<div class='overflow-auto col-md-3 border border-dark rounded-lg' style="height: 50vh;">
+
+			<div class='overflow-auto col-md-3 border border-info rounded-lg p-3 mb-2 bg-light' style="height: 50vh;">
 				<ul class='list-group list-group'>
 					<li class='list-group-item'>User328934</li>
 					<li class='list-group-item'>User3234</li>
@@ -56,8 +64,8 @@
 				</ul>
 			</div>
 		</div>
-		<div class='row'>
-			<textarea class='overflow-auto col border rounded-lg' rows='4'>Enter your message...</textarea>
+		<div class='row p-3 mb-2 bg-light'>
+			<textarea class='overflow-auto col border border-info rounded-lg' rows='4'>Enter your message...</textarea>
 		</div>
 	</div>
 
