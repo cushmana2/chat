@@ -1,0 +1,8 @@
+Besides class materials, I used the following outside sources to help with the project.
+
+Help with the date object + functions:
+https://usefulangle.com/post/187/nodejs-get-date-time
+https://www.w3schools.com/jsref/jsref_obj_date.asp
+
+Help with EST conversions
+https://www.timeanddate.com/time/zones/est

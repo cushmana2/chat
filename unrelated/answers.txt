@@ -1,0 +1,3 @@
+In in-class exercise 6, we create exports objects within the module, the variable x and the function square().
+However, we also create a regular variable within the module, y.
+Because of this, if we try to call the y variable like an export (myModule.y), it will cause an error because y is unknown and undefined.
