@@ -33,8 +33,11 @@ socket.on('chatUpdate', function(data) {
 
 //updates chat room with notice upon disconnection
 socket.on('disconnection', function(data) {
-    document.body.appendChild(
-        document.createTextNode(data.message)
+    let disconnectionMsg = document.createElement('li');
+    disconnectionMsg.innerHTML = data.message;
+    disconnectionMsg.className = 'list-group';
+    chatBox.appendChild(
+        disconnectionrMsg
     );
 });
 
