@@ -1,4 +1,4 @@
-const VM_IP = 'http://34.75.193.0';
+const VM_IP = 'http://localhost';
 const http = require('http');
 const socketio = require('socket.io');
 const fileServer = require('./fileServer.js');
@@ -25,8 +25,16 @@ io = socketio(httpServer);
 
 io.on('connection', function(socket) {
     chat.connect(socket);
+    console.log('connected');
+
+    socket.on('message', function(data) {
+        chat.message(socket, data);
+        console.log('message recieved');
+    });
+
+    socket.on('disconnect', function() {
+        chat.disconnect(socket);
+        console.log('disconnected');
+    });
 });
 
-io.on('disconnect', function(socket) {
-    chat.disconnect(socket, "Room1");
-});

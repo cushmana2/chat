@@ -29,43 +29,18 @@
 		</div>
 		<div class='row p-3 mb-2 bg-light'>
 			<div class='overflow-auto col-md-9 border border-info rounded-lg' style="height: 50vh;">
-				<ul class='list-group list-group-flush'>
-					<li class='list-group-item primary'>[12:06]User328934: blah blah blah</li>
-					<li class='list-group-item'>[12:06]User3234: blah blah blah blah</li>
-					<li class='list-group-item'>[12:07]User32893: blah blah</li>
-					<li class='list-group-item'>[12:08]User8934: blah blah blah</li>
-					<li class='list-group-item'>[12:09]User8934: blah blah blah blah</li>
-					<li class='list-group-item'>[12:08]User8934: blah blah blah</li>
-					<li class='list-group-item'>[12:09]User8934: blah blah blah blah</li>
-					<li class='list-group-item'>[12:08]User8934: blah blah blah</li>
-					<li class='list-group-item'>[12:09]User8934: blah blah blah blah</li>
-					<li class='list-group-item'>[12:09]User8934: blah blah blah blah</li>
-					<li class='list-group-item'>[12:08]User8934: blah blah blah</li>
-					<li class='list-group-item'>[12:09]User8934: blah blah blah blah</li>
-					<li class='list-group-item'>[12:08]User8934: blah blah blah</li>				
+				<ul class='list-group list-group-flush' id='chatBox'>				
 				</ul>
 			</div>
 
 			<div class='overflow-auto col-md-3 border border-info rounded-lg p-3 mb-2 bg-light' style="height: 50vh;">
-				<ul class='list-group list-group'>
-					<li class='list-group-item'>User328934</li>
-					<li class='list-group-item'>User3234</li>
-					<li class='list-group-item'>User32893</li>
-					<li class='list-group-item'>User8934</li>
-					<li class='list-group-item'>User934</li>
-					<li class='list-group-item'>User84</li>
-					<li class='list-group-item'>User893</li>
-					<li class='list-group-item'>User232384</li>
-					<li class='list-group-item'>User2343</li>
-					<li class='list-group-item'>User844</li>
-					<li class='list-group-item'>User89453</li>
-					<li class='list-group-item'>User84564</li>
-					<li class='list-group-item'>User89113</li>
+				<ul class='list-group list-group' id='userBox'>
 				</ul>
 			</div>
 		</div>
 		<div class='row p-3 mb-2 bg-light'>
-			<textarea id='sendMsg' class='overflow-auto col border border-info rounded-lg' rows='4'>Enter your message...</textarea>
+			<textarea id='msg' placeholder='Enter your message...' class='overflow-auto col border border-info rounded-lg' rows='4'></textarea>
+			<button class='btn btn-primary' id='sendMsg'>Send Message</button>
 		</div>
 	</div>
 

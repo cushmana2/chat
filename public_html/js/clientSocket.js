@@ -1,10 +1,50 @@
-const socket = io('http://34.75.193.0:80');
+const socket = io('http://localhost:80');
 
-socket.on('greeting-from-server', function (message) {
-    document.body.appendChild(
-        document.createTextNode(message.greeting)
+let chatBox = document.getElementById('chatBox');
+let userBox = document.getElementById('userBox');
+
+//updates chat room with newly joined user
+//updates user list and adds notice message
+socket.on('userJoin', function(data) {
+    let newUserMsg = document.createElement('li');
+    newUserMsg.innerHTML = data.message;
+    newUserMsg.className = 'list-group';
+    chatBox.appendChild(
+        newUserMsg
     );
-    socket.emit('greeting-from-client', {
-        greeting: 'Hello Server'
-    });
+
+    let newUserList = document.createElement('li');
+    newUserList.innerHTML = 'Anonymous User';
+    newUserList.className = 'list-group';
+    userBox.appendChild(
+        newUserList
+    );
 });
+
+//updates chatroom with messages sent from server
+socket.on('chatUpdate', function(data) {
+    let newMsg = document.createElement('li');
+    newMsg.innerHTML = data.update;
+    newMsg.className = 'list-group';
+    chatBox.appendChild(
+        newMsg
+    );
+})
+
+//updates chat room with notice upon disconnection
+socket.on('disconnection', function(data) {
+    document.body.appendChild(
+        document.createTextNode(data.message)
+    );
+});
+
+//event handler for send message button
+//sends textarea input to server, clears textarea
+function sendMsg() {
+    let textbox = document.getElementById('msg');
+    let msg = textbox.value;
+    socket.send(msg);
+    textbox.value = '';
+}
+
+document.getElementById('sendMsg').addEventListener('click', sendMsg);
