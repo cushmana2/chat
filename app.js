@@ -23,17 +23,21 @@ const httpServer = http.createServer(function (req, res) {
 httpServer.listen(80);
 io = socketio(httpServer);
 
+
+//io is basically used to emit from the server
+//(emit to room, broadcast, update connected sockets)
+//the socket object within is used for specific clients
 io.on('connection', function(socket) {
-    chat.connect(socket);
+    chat.connect(socket, io);
     console.log('connected');
 
     socket.on('message', function(data) {
-        chat.message(socket, data);
+        chat.message(io, data);
         console.log('message recieved');
     });
 
     socket.on('disconnect', function() {
-        chat.disconnect(socket);
+        chat.disconnect(io);
         console.log('disconnected');
     });
 });
