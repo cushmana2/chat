@@ -1,4 +1,4 @@
-const socket = io('http://34.75.193.0:8080');
+const socket = io('http://34.75.193.0:80');
 
 socket.on('greeting-from-server', function (message) {
     document.body.appendChild(
