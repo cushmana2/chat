@@ -2,6 +2,7 @@ const VM_IP = 'http://34.75.193.0';
 const http = require('http');
 const socketio = require('socket.io');
 const fileServer = require('./fileServer.js');
+const chat = require('./chat.js');
 
 const httpServer = http.createServer(function (req, res) {
     let urlObj = new URL(req.url, VM_IP);
@@ -23,14 +24,9 @@ httpServer.listen(80);
 io = socketio(httpServer);
 
 io.on('connection', function(socket) {
-    socket.emit('greeting-from-server', {
-        greeting: 'Hello Client'
-    });
-    socket.on('greeting-from-client', function (message) {
-        console.log(message);
-    });
-    socket.on('disconnect', function() {
-        console.log('discconection');
-    });
+    chat.connect(socket);
 });
 
+io.on('disconnect', function(socket) {
+    chat.disconnect(socket, "Room1");
+});
