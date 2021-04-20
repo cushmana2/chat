@@ -1,54 +1,51 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <title>Chat Application Demo</title>
-  </head>
-  <body>
-	<div class='container overflow-auto'>
-		<div class='row p-3 mb-2 bg-light'>
-			<div class='col-md-9' >
-				<h1 class='display-4'>
-					<select name="rooms" id="rooms">
-					<option value="room 1">Room #1</option>
-					<option value="room2">Room #2</option>
-					<option value="room3">Room #3</option>
-					<option value="room4">Room #4</option>
-					</select>
-				</h1>
-			</div>
-			<div class='col-md-3 border rounded-lg'>
-				<h1 class='display-4'>Users</h1>
+	<head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+	  <link rel="stylesheet" href="css/style.css">
+	  <title>ChatApp</title>
+	</head>
+	<body> 
+		<div class="chat-container">
+			<header class="chat-header">
+			  <h1><i class="fas fa-comment-alt"></i>ChatAPP</h1>
+			  <a href="index.html" class="btn">Leave Room</a>
+			</header>
+		
+			<main class="chat-main">
+			  <div class="chat-sidebar">
+				<h3><i class="fas fa-comments"></i> Room Name:</h3>
+				<h2 id="room-name">CSC543</h2>
+				<h3><i class="fas fa-users"></i> Users</h3>
+				<ul class='list-group list-group' id='userBox'></ul>
+			  </div>
+			  <div class="chat-messages" id ="">
+				<div class="message">
+						<p class="meta">Brad <span>9:12pm</span></p>
+						<p class="text">
+							This is a sample of how the text will look like
+						</p>
+					</div>
+				<ul class='list-group list-group-flush' id='chatBox'></ul>
+			  </div>
+			</main>
+			
+			<div class="chat-form-container">
+			  <form id="chat-form">
+				<input
+				  id="msg"
+				  type="text"
+				  placeholder="Enter Message"
+				  required autocomplete="on"
+				  />
+				<button class="btn" id='sendMsg'><i class="fas fa-paper-plane"></i> Send</button>
+			  </form>
 			</div>
 		</div>
-		<div class='row p-3 mb-2 bg-light'>
-			<div class='overflow-auto col-md-9 border border-info rounded-lg' style="height: 50vh;">
-				<ul class='list-group list-group-flush' id='chatBox'>				
-				</ul>
-			</div>
 
-			<div class='overflow-auto col-md-3 border border-info rounded-lg p-3 mb-2 bg-light' style="height: 50vh;">
-				<ul class='list-group list-group' id='userBox'>
-				</ul>
-			</div>
-		</div>
-		<div class='row p-3 mb-2 bg-light'>
-			<textarea id='msg' placeholder='Enter your message...' class='overflow-auto col border border-info rounded-lg' rows='4'></textarea>
-			<button class='btn btn-primary' id='sendMsg'>Send Message</button>
-		</div>
-	</div>
-
-	<script src='/socket.io/socket.io.js'></script>
-	<script src='js/clientSocket.js'></script>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+	  <script src='/socket.io/socket.io.js'></script>
+	  <script src='js/clientSocket.js'></script>
+	</body>
 </html>
