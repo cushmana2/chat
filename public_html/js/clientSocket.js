@@ -5,6 +5,17 @@ let userBox = document.getElementById('userBox');
 
 //updates chat room with newly joined user
 //updates user list and adds notice message
+socket.on('connection', function(data) {
+    data.userList.forEach(user => {
+        let list = document.createElement('li');
+        list.innerHTML = user;
+        list.className = 'list-group'
+        userBox.appendChild(
+            list
+        );            
+    });
+})
+
 socket.on('userJoin', function(data) {
     let newUserMsg = document.createElement('li');
     newUserMsg.innerHTML = data.message;
@@ -14,7 +25,7 @@ socket.on('userJoin', function(data) {
     );
 
     let newUserList = document.createElement('li');
-    newUserList.innerHTML = 'Anonymous User';
+    newUserList.innerHTML = data.user;
     newUserList.className = 'list-group';
     userBox.appendChild(
         newUserList
@@ -36,9 +47,20 @@ socket.on('disconnection', function(data) {
     let disconnectionMsg = document.createElement('li');
     disconnectionMsg.innerHTML = data.message;
     disconnectionMsg.className = 'list-group';
+    console.log('what');
     chatBox.appendChild(
-        disconnectionrMsg
+        disconnectionMsg
     );
+
+    let userList = userBox.getElementsByTagName('li');
+    console.log(userList);
+    console.log('working');
+    Array.from(userList).forEach(user => {
+        if (data.user == user.innerHTML)
+        {
+            user.remove();
+        }
+    });
 });
 
 //event handler for send message button

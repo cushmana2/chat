@@ -32,12 +32,12 @@ io.on('connection', function(socket) {
     console.log('connected');
 
     socket.on('message', function(data) {
-        chat.message(io, data);
+        chat.message(socket, io, data);
         console.log('message recieved');
     });
 
     socket.on('disconnect', function() {
-        chat.disconnect(io);
+        chat.disconnect(socket, io);
         console.log('disconnected');
     });
 });
