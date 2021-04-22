@@ -4,7 +4,7 @@ let chatBox = document.getElementById('chatBox');
 let userBox = document.getElementById('userBox');
 
 socket.on('connection', function(data) {
-    updateUser(data);
+    updateUser(data, socket);
 });
 
 socket.on('userJoin', function(data) {
@@ -16,10 +16,16 @@ socket.on('chatUpdate', function(data) {
     addMessage(data);
 });
 
+socket.on('changeRoom', function(data) {
+    clearRoom(data);
+    updateUser(data);
+});
+
 //updates chat room with notice upon disconnection
 socket.on('disconnection', function(data) {
     removeUser(data);
 });
+
 
 //event handler for send message button
 //sends textarea input to server, clears textarea
@@ -33,13 +39,30 @@ function sendMsg() {
 //updates userlist for new connections will all users currently in room
 function updateUser(data) {
     data.userList.forEach(user => {
-        let list = document.createElement('li');
-        list.innerHTML = user;
-        list.className = 'list-group'
-        userBox.appendChild(
+        if(user.room == data.room && user.id != socket.id) {
+            let list = document.createElement('li');
+            list.innerHTML = user.id;
+            list.className = 'list-group'
+            userBox.appendChild(
             list
-        );            
+        ); 
+        }           
     });
+}
+
+function clearRoom(data) {
+    let listItems = userBox.getElementsByTagName('li');
+    console.log(listItems);
+    Array.from(listItems).forEach(user => {
+        console.log(user);
+        if (data.userList.id != user.innerHTML)
+        {
+            user.remove();
+        }
+    });
+    
+    let messages = chatBox.getElementsByTagName('li');
+    Array.from(messages).forEach(message => message.remove());
 }
 
 //updates room on user join
@@ -89,4 +112,12 @@ function removeUser(data) {
     });
 }
 
+function changeRoom(event) {
+    roomName = event.target.value;
+    socket.emit('changeRoom', {
+        room : roomName
+    });
+}
+
 document.getElementById('sendMsg').addEventListener('click', sendMsg);
+document.getElementById('room').addEventListener('change', changeRoom);
