@@ -36,7 +36,7 @@ io.on('connection', function(socket) {
         console.log('message recieved');
     });
 
-    socket.on('disconnect', function() {
+    socket.on('disconnecting', function() {
         chat.disconnect(socket, io);
         console.log('disconnected');
     });
