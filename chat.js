@@ -8,6 +8,7 @@ exports.connect = function (socket, io) {
         userList : socketList
     });
     socketList.push(socket.id);
+    console.log(socketList);
     //User introduction to other users
     io.in('Room1').emit('userJoin', {
         message: 'Notice: ' + socket.id +' has joined the chat room',
@@ -22,8 +23,10 @@ exports.disconnect = function (socket, io) {
         message: 'Notice: '+socket.id+' has disconnected',
         user: socket.id
     });
-    let index = socketList.find(i => i == socket.id);
+    let index = socketList.findIndex(i => i == socket.id);
+    console.log(index);
     socketList.splice(index, 1);
+    console.log(socketList);
 }
 
 //handles new messages sent to the server
