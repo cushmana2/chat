@@ -32,6 +32,7 @@ io.on('connection', function(socket) {
     chat.connect(socket, io, 'default');
 
     socket.on('message', function(data) {
+        console.log('Message Sent');
         chat.message(socket, io, data);
     });
 
