@@ -15,10 +15,12 @@ const pool = mysql.createPool({
 //results is an array object containing each row as an object
 //to obtain specific result: result[0].username
 
+
 //Takes a username and a password, as well as the database connection and inserts into db
 exports.createUser = function(uName, pWord, res) {
-   pool.query("INSERT INTO user(username, password) VALUES ('" + uName + "' , '" + pWord + "');",
-     function(error, results, fields) {
+   pool.getConnection(function(err, connection) {
+      connection.query("INSERT INTO user(username, password) VALUES ('" + uName + "' , '" + pWord + "');",
+      function(error, results, fields) {
         if (error) throw error;
         else {
            console.log('Account creation successful!');
@@ -28,6 +30,7 @@ exports.createUser = function(uName, pWord, res) {
            //connection.end();  Don't know if we need this in each function or not
         } //else
      }); //end query function
+   });
 }; //overall function
 
 //Takes a room name and password plus db connection, inserts into db
