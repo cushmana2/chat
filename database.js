@@ -51,30 +51,39 @@ function createRoom(connection, rName, pWord) {
 
 
 //BUFF UP ERROR HANDLING, ARE WE RETURNING ANYTHING? FIT INTO MAIN CODE
-function getUser(connection, uName, pWord) {
-   connection.query("SELECT username FROM user WHERE username = '" + uName + "';",
-     function(error, results, fields) {
-        if (error) throw error;
-        else {
-           console.log(results[0].username);
-           let realUser = results[0].username;
-           connection.query("SELECT password FROM user WHERE username = '" + uName + "';",
-             function(error, results, fields) {
-                if (error) throw error;
-                else {
-                   console.log(results[0].password);
-                   let realPass = results[0].password;
-                   if (realUser == uName && realPass == pWord) {
-                      console.log('Login Succesful!');
-                      //what else??
-                   }
-                   else {
-                      console.log('Incorrect username or password')
-                   } //else
-                } //else
-             }); //query
-        } //else
-     }); //query function
+exports.getUser = function(uName, pWord, res) {
+   pool.getConnection(function(err, connection) {
+      connection.query("SELECT username FROM user WHERE username = '" + uName + "';",
+      function(error, results, fields) {
+         if (error) throw error;
+         else {
+            console.log(results[0].username);
+            let realUser = results[0].username;
+            connection.query("SELECT password FROM user WHERE username = '" + uName + "';",
+               function(error, results, fields) {
+                  if (error) throw error;
+                  else {
+                     console.log(results[0].password);
+                     let realPass = results[0].password;
+                     if (realUser == uName && realPass == pWord) {
+                        console.log('Login Succesful!');
+                        res.writeHead(200, {'Content-Type': 'text/plaintext'});
+                        res.write('Login Success');
+                        res.end();
+                        connection.close();
+                     }
+                     else {
+                        console.log('Incorrect username or password')
+                        res.writeHead(400, {'Content-Type': 'text/plaintext'});
+                        res.write('Login Failure: Bad Credentials');
+                        res.end();
+                        connection.close();
+                     } //else
+                  } //else
+               }); //query
+         } //else
+      }); //query function
+   });
 }; //overall function
 
 //test

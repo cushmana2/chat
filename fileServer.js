@@ -3,14 +3,15 @@ const fs = require('fs');
 
 exports.readFile = function(filepath, res) {
     fs.readFile(filepath, function(err, data) {
-        if(err) {
-	    errorHandler(res);
-	}
-	else {
-	    res.writeHead(200, {'Content-Type': extension(filepath) });
-	    res.write(data);
-	    res.end();
-	}
+		console.log(filepath);
+		if(err) {
+	    	errorHandler(res);
+		}
+		else {
+	    	res.writeHead(200, {'Content-Type': extension(filepath) });
+	    	res.write(data);
+	    	res.end();
+		}
     });
 }
 

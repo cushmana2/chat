@@ -9,14 +9,17 @@ const database = require('./database.js');
 const httpServer = http.createServer(function (req, res) {
     let urlObj = new URL(req.url, VM_IP);
     path = urlObj.pathname;
-
+    console.log(req.method);
     if (req.method == 'GET') {
         switch(path) {
             case "/":
                 fileServer.readFile("public_html/index.html", res);
                 break;
+            case "/chat":
+                fileServer.readFile("public_html/demo.html", res);
+                break;
             default:
-                fileServer.readFile("public_html/"+path, res);
+                fileServer.readFile("public_html"+path, res);
                 break;
         }
     }
@@ -30,8 +33,11 @@ const httpServer = http.createServer(function (req, res) {
                 r = JSON.parse(reqBody);
                 database.createUser(r.username, r.password, res);
                 break;
+            case "/login":
+                l = JSON.parse(reqBody);
+                database.getUser(l.username, l.password, res);
+                break;
             default:
-                console.log(path);
                 break;
         }
     });
