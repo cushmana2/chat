@@ -11,13 +11,6 @@ const pool = mysql.createPool({
 });
 
 
-pool.query("show tables;",
-  function (error, results, fields) {
-    if (error) throw error;
-    console.log('Success');
-    console.log(results);
-});
-
 //NOTE
 //results is an array object containing each row as an object
 //to obtain specific result: result[0].username
