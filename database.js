@@ -23,12 +23,15 @@ pool.query("show tables;",
 //to obtain specific result: result[0].username
 
 //Takes a username and a password, as well as the database connection and inserts into db
-function createUser(connection, uName, pWord) {
-   connection.query("INSERT INTO user(username, password) VALUES ('" + uName + "' , '" + pWord + "');",
+exports.createUser = function(uName, pWord, res) {
+   pool.query("INSERT INTO user(username, password) VALUES ('" + uName + "' , '" + pWord + "');",
      function(error, results, fields) {
         if (error) throw error;
         else {
            console.log('Account creation successful!');
+           res.writeHead(200, {'Content-Type': 'text/plaintext'});
+           res.write('Register Success');
+           res.end();
            //connection.end();  Don't know if we need this in each function or not
         } //else
      }); //end query function
@@ -109,5 +112,4 @@ function getRoom(connection, rName, pWord) {
      }); //query
 }; //overall function
 
-//test
-getRoom(pool, "Tonys Room", "12345");
+
