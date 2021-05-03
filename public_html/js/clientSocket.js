@@ -1,4 +1,4 @@
-const socket = io('http://localhost:80');
+const socket = io('35.239.56.176:80');
 
 let chatBox = document.getElementById('chatBox');
 let userBox = document.getElementById('userBox');
@@ -41,7 +41,7 @@ function updateUser(data) {
     data.userList.forEach(user => {
         if(user.room == data.room && user.id != socket.id) {
             let list = document.createElement('li');
-            list.innerHTML = user.id;
+            list.innerHTML = user.name;
             list.className = 'list-group'
             userBox.appendChild(
             list
@@ -55,7 +55,7 @@ function clearRoom(data) {
     console.log(listItems);
     Array.from(listItems).forEach(user => {
         console.log(user);
-        if (data.userList.id != user.innerHTML)
+        if (data.userList.name != user.innerHTML)
         {
             user.remove();
         }
@@ -76,7 +76,7 @@ function userJoin(data) {
     );
 
     let newUserList = document.createElement('li');
-    newUserList.innerHTML = data.user;
+    newUserList.innerHTML = data.name;
     newUserList.className = 'list-group';
     userBox.appendChild(
         newUserList
@@ -105,7 +105,7 @@ function removeUser(data) {
 
     let userList = userBox.getElementsByTagName('li');
     Array.from(userList).forEach(user => {
-        if (data.user == user.innerHTML)
+        if (data.name == user.innerHTML)
         {
             user.remove();
         }

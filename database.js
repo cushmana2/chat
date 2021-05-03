@@ -70,14 +70,14 @@ exports.getUser = function(uName, pWord, res) {
                         res.writeHead(200, {'Content-Type': 'text/plaintext'});
                         res.write('Login Success');
                         res.end();
-                        connection.close();
+                        connection.release();
                      }
                      else {
                         console.log('Incorrect username or password')
                         res.writeHead(400, {'Content-Type': 'text/plaintext'});
                         res.write('Login Failure: Bad Credentials');
                         res.end();
-                        connection.close();
+                        connection.release();
                      } //else
                   } //else
                }); //query

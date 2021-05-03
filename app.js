@@ -1,15 +1,16 @@
-const VM_IP = 'http://localhost';
+const VM_IP = 'http://35.239.56.176';
 const http = require('http');
 const socketio = require('socket.io');
 const fileServer = require('./fileServer.js');
 const chat = require('./chat.js');
 const database = require('./database.js');
 
+let newUser = '';
 
 const httpServer = http.createServer(function (req, res) {
     let urlObj = new URL(req.url, VM_IP);
     path = urlObj.pathname;
-    console.log(req.method);
+    console.log(path);
     if (req.method == 'GET') {
         switch(path) {
             case "/":
@@ -35,7 +36,10 @@ const httpServer = http.createServer(function (req, res) {
                 break;
             case "/login":
                 l = JSON.parse(reqBody);
-                database.getUser(l.username, l.password, res);
+                setTimeout(function() {
+		    database.getUser(l.username, l.password, res);
+		}, 2000);
+		newUser = l.username;
                 break;
             default:
                 break;
@@ -52,8 +56,8 @@ io = socketio(httpServer);
 //(emit to room, broadcast, update connected sockets)
 //the socket object within is used for specific clients
 io.on('connection', function(socket) {
-    chat.connect(socket, io, 'default');
-
+    chat.connect(socket, io, newUser);
+    console.log(newUser);
     socket.on('message', function(data) {
         console.log('Message Sent');
         chat.message(socket, io, data);

@@ -3,7 +3,6 @@ const fs = require('fs');
 
 exports.readFile = function(filepath, res) {
     fs.readFile(filepath, function(err, data) {
-		console.log(filepath);
 		if(err) {
 	    	errorHandler(res);
 		}
