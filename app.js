@@ -30,8 +30,6 @@ const httpServer = http.createServer(function (req, res) {
                 r = JSON.parse(reqBody);
                 database.createUser(r.username, r.password, res);
                 break;
-            case "/login":
-                break;
             default:
                 console.log(path);
                 break;

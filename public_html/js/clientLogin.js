@@ -2,6 +2,15 @@ const VM_IP = 'localhost';
 
 function login() {
 
+    let AJAX = new XMLHttpRequest();
+    AJAX.onerror = function() {
+        alert('Error');
+    }
+    AJAX.onload = function() {
+        console.log("Logged in!");
+    }
+    AJAX.open('GET', "/");
+    AJAX.send();
 }
 
 function register() {
@@ -24,3 +33,4 @@ function register() {
 }
 
 document.getElementById('registerBtn').addEventListener('click', register);
+document.getElementById('loginBtn').addEventListener('click', login);
