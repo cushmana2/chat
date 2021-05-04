@@ -1,53 +1,50 @@
 <!doctype html>
-
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <title>Chat Application Demo</title>
-  </head>
-  <body>
-	<div class='container overflow-auto'>
-		<div class='row p-3 mb-2 bg-light'>
-			<div class='col-md-9' >
-				<h1 class='display-4'>
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/style.css">
+		<title>Chat Application Demo</title>
+	</head>
+	<body class="bg">
+		<div class="container mt-4 w-75 bg-white">
+			<div class="row p-4  bg-primary rounded-lg">
+				<div class="left">
 					<select name="rooms" id="room">
-					<option value="room 1">Room #1</option>
-					<option value="room2">Room #2</option>
-					<option value="room3">Room #3</option>
-					<option value="room4">Room #4</option>
+						<option value="room 1">Room 1</option>
+						<option value="room2">Room 2</option>
+						<option value="room3">Room 3</option>
+						<option value="room4">Room 4</option>		
 					</select>
-				</h1>
+				</div>
+				<div class="right">
+					<i class="bi bi-plus-circle"></i>
+				</div>
+				
+				<!-- <input class ="IN" type="password" id="password" placeholder="passcode"/> -->
 			</div>
-			<div class='col-md-3 border rounded-lg'>
-				<h1 class='display-4'>Users</h1>
-			</div>
-		</div>
-		<div class='row p-3 mb-2 bg-light'>
-			<div class='overflow-auto col-md-9 border border-info rounded-lg' style="height: 50vh;">
-				<ul class='list-group list-group-flush' id='chatBox'>				
-				</ul>
-			</div>
+			<div class='row mt-1 p-2 mb-1 bg-primary rounded-lg'>
+				<div class='overflow-auto col-md-9 border border-primary rounded-lg p-3 mb-1 bg-white' style="height: 50vh;">
+					<ul class='list-group list-group-flush' id='chatBox'></ul>
+				</div>
 
-			<div class='overflow-auto col-md-3 border border-info rounded-lg p-3 mb-2 bg-light' style="height: 50vh;">
-				<ul class='list-group list-group' id='userBox'>
-				</ul>
+				<div class=' Users overflow-auto col-md-3  border-primary rounded-lg p-3 mb-1 bg-white' style="height: 50vh;">
+					<ul class='list-group list-group' id='userBox'></ul>
+				</div>
+			</div>
+			<div class='row mt-1 p-2 mb-2 bg-primary rounded-lg'>
+				<textarea class='overflow-auto col rounded-left bg-white p-2 ' rows='1' id='msg' spellcheck="true" placeholder='Enter your message...'></textarea>
+				<button class="btn" type="button" id="sendMsg">Send</button>
 			</div>
 		</div>
-		<div class='row p-3 mb-2 bg-light' id='inputs'>
-			<textarea class='overflow-auto col border border-info rounded-lg' rows='4' id='msg' placeholder='Enter your message...'></textarea>
-			<button type='button' id='sendMsg'>Send</button>
-		</div>
-	</div>
 
-	<script src='/socket.io/socket.io.js'></script>
-	<script src='js/clientSocket.js'></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+		<script src='/socket.io/socket.io.js'></script>
+		<script src='js/clientSocket.js'></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	</body>
 </html>
