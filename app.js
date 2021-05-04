@@ -37,9 +37,9 @@ const httpServer = http.createServer(function (req, res) {
             case "/login":
                 l = JSON.parse(reqBody);
                 setTimeout(function() {
-		    database.getUser(l.username, l.password, res);
-		}, 2000);
-		newUser = l.username;
+		        database.getUser(l.username, l.password, res);
+		        }, 2000);
+		        newUser = l.username;
                 break;
             default:
                 break;

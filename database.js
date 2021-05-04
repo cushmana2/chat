@@ -89,12 +89,40 @@ exports.getUser = function(uName, pWord, res) {
    });
 }; //overall function
 
+
+exports.checkRoomPass = function(roomName, pWord, res) {
+   pool.getConnection(function(err, connection) {
+      connection.query("SELECT password FROM room WHERE roomName = '" + roomName + "';",
+      function(error, results, fields) {
+         if (error) throw error;
+         else {
+            console.log(results[0]);
+            let realPass = results[0].password;
+            if(pWord == realPass){
+               console.log('Login Succesful!');
+               res.writeHead(200, {'Content-Type': 'text/plaintext'});
+               res.write('Login Success');
+               res.end();
+               connection.release();
+            }
+            else {
+               console.log('Incorrect username or password')
+               res.writeHead(400, {'Content-Type': 'text/plaintext'});
+               res.write('Login Failure: Bad Credentials');
+               res.end();
+               connection.release();
+            } //else
+         } //else
+      }); //query function
+   });
+}; //overall function
+
 //test
 //getUser(pool, "Tonydags", "12345");
 
-//Get all rooms
+//Get all rooms (doesn't work?)
 //UPDATE ERROR HANDLING AND FIT INTO MAIN CODE
-exports.getRoom = function(res) {
+/*exports.getRoom = function(res) {
    pool.getConnection(function(err, connection) {
       connection.query("SELECT roomName FROM room;",
       function(error, results, fields) {
@@ -108,5 +136,5 @@ exports.getRoom = function(res) {
       }); //query
    });
 }; //overall function
-
+*/
 

@@ -141,6 +141,8 @@ function changeRoom(event) {
 function addRoom() {
     //generating form fields
     let formDiv = document.getElementById('addRoomForm');
+    formDiv.setAttribute('style', 'text-align: center;');
+
     let fields = [];
     
     let name = document.createElement('input');
@@ -160,7 +162,7 @@ function addRoom() {
     
 
     let password = document.createElement('input');
-    password.setAttribute('placeholder', 'Password (optional)');
+    password.setAttribute('placeholder', 'Password (if private)');
     password.type = 'text';
     password.id = 'password';
     fields.push(password);
@@ -173,6 +175,9 @@ function addRoom() {
     Array.from(fields).forEach(field => {
         formDiv.appendChild(
             field
+        );
+        formDiv.appendChild(
+            document.createElement('br')
         );
     });
 
@@ -198,6 +203,7 @@ function processRoom() {
             //clear form
             Array.from(form.children).forEach (element => {
             element.remove();
+            alert('Room '+name.value+' created!');
             });
         }
         else {
@@ -214,6 +220,7 @@ function processRoom() {
         //clear form
         Array.from(form.children).forEach (element => {
         element.remove();
+        alert('Room '+name.value+' created!');
         });
     }
 
