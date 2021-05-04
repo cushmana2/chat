@@ -56,8 +56,7 @@ io = socketio(httpServer);
 //(emit to room, broadcast, update connected sockets)
 //the socket object within is used for specific clients
 io.on('connection', function(socket) {
-    let rooms = database.getRoom();
-    chat.connect(socket, io, newUser, rooms);
+    chat.connect(socket, io, newUser);
     
     socket.on('message', function(data) {
         console.log('Message Sent');
@@ -66,12 +65,13 @@ io.on('connection', function(socket) {
 
     socket.on('changeRoom', function(data) {
         chat.changeRoom(socket, io, data);
-    })
+    });
 
     socket.on('addRoom', function(data) {
-        database.createRoom(data.name, data.pass);
+        console.log('add room');
+	database.createRoom(data.name, data.pass);
         chat.updateRoom(socket, io, data);
-    })
+    });
 
     socket.on('disconnecting', function() {
         chat.disconnect(socket, io);

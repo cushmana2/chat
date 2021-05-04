@@ -7,7 +7,7 @@ let roomlist = document.getElementById('room');
 
 socket.on('connection', function(data) {
     updateUser(data, socket);
-    updateRoom(data, socket);
+    updateRoom(data);
 });
 
 socket.on('userJoin', function(data) {
@@ -32,6 +32,28 @@ socket.on('updateRoom', function(data) {
 socket.on('disconnection', function(data) {
     removeUser(data);
 });
+
+function updateRoom(data) {
+    let rooms = data.roomlist;
+    console.log(rooms);
+    if(rooms) {
+    Array.from(roomlist.children).forEach(room => {
+	console.log(room)
+	console.log(room.value);
+        if(room.value != 'default'){
+	room.remove();
+	}
+    });
+    Array.from(rooms).forEach(room => {
+        newroom = document.createElement('option');
+	newroom.value = room;
+	newroom.innerHTML = room;
+	roomlist.appendChild(
+	    newroom
+        );
+    });
+}
+}
 
 
 //event handler for send message button
@@ -119,16 +141,6 @@ function removeUser(data) {
     });
 }
 
-function updateRoom(data) {
-    let newRoom = document.createElement('option');
-    newRoom.value = data.name;
-    newRoom.innerHTML = data.name;
-    newRoom.setAttribute('data-visibility', data.vis);
-    roomlist.appendChild(
-        newRoom
-    );
-}
-
 function changeRoom(event) {
     roomName = event.target.value;
     socket.emit('changeRoom', {
@@ -203,7 +215,6 @@ function processRoom() {
             //clear form
             Array.from(form.children).forEach (element => {
             element.remove();
-            alert('Room '+name.value+' created!');
             });
         }
         else {
@@ -216,11 +227,10 @@ function processRoom() {
             vis: 'public',
             pass: 'None'
         });
-
+	console.log('adding room');
         //clear form
         Array.from(form.children).forEach (element => {
         element.remove();
-        alert('Room '+name.value+' created!');
         });
     }
 
@@ -228,4 +238,4 @@ function processRoom() {
 
 document.getElementById('sendMsg').addEventListener('click', sendMsg);
 document.getElementById('room').addEventListener('change', changeRoom);
-document.getElementById('roomBtn').addEventListener('click', addRoom)
+document.getElementById('roomBtn').addEventListener('click', addRoom);

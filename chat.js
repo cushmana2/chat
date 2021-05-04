@@ -6,6 +6,7 @@ const sock = {
 };
 
 let connections = [];
+let rooms = [];
 let index = '';
 
 function getConnection(socket) {
@@ -13,7 +14,7 @@ function getConnection(socket) {
 }
 
 //handles initial socket connection
-exports.connect = function (socket, io, user, rooms) {
+exports.connect = function (socket, io, user) {
     //creates new sock object with attributes, adds to connections array
     newConnection = Object.create(sock);
     newConnection.id = socket.id;
@@ -21,7 +22,7 @@ exports.connect = function (socket, io, user, rooms) {
     newConnection.room = 'default';
 
     //other function handles joining room
-    roomJoin(socket, newConnection.room, io, newConnection.name, rooms);
+    roomJoin(socket, newConnection.room, io, newConnection.name);
     connections.push(newConnection);
 }
 
@@ -81,20 +82,21 @@ exports.changeRoom = function(socket, io, data) {
 
 //emits newly added room to all clients
 exports.updateRoom = function(socket, io, data) {
+    rooms.push(data.name);
+    console.log(rooms);
     io.emit('updateRoom', {
-        name : data.name,
-        vis : data.vis,
-        pass : data.pass
+        roomlist : rooms
     });
 }
 
 //split off from connection event because of room changes
 //joins a socket to specified room
-function roomJoin(socket, room, io, name, rooms) {
+function roomJoin(socket, room, io, name) {
     socket.join(room);
     filteredConnections = connections.filter(connection => (connection.room == room));
     socket.emit('connection' , {
         userList : filteredConnections,
+	roomlist : rooms,
         room : room
     });
     //User introduction to other users
