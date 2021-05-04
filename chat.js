@@ -13,7 +13,7 @@ function getConnection(socket) {
 }
 
 //handles initial socket connection
-exports.connect = function (socket, io, user) {
+exports.connect = function (socket, io, user, rooms) {
     //creates new sock object with attributes, adds to connections array
     newConnection = Object.create(sock);
     newConnection.id = socket.id;
@@ -21,7 +21,7 @@ exports.connect = function (socket, io, user) {
     newConnection.room = 'default';
 
     //other function handles joining room
-    roomJoin(socket, newConnection.room, io, newConnection.name);
+    roomJoin(socket, newConnection.room, io, newConnection.name, rooms);
     connections.push(newConnection);
 }
 
@@ -90,7 +90,7 @@ exports.updateRoom = function(socket, io, data) {
 
 //split off from connection event because of room changes
 //joins a socket to specified room
-function roomJoin(socket, room, io, name) {
+function roomJoin(socket, room, io, name, rooms) {
     socket.join(room);
     filteredConnections = connections.filter(connection => (connection.room == room));
     socket.emit('connection' , {

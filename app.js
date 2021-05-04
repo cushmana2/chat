@@ -56,8 +56,9 @@ io = socketio(httpServer);
 //(emit to room, broadcast, update connected sockets)
 //the socket object within is used for specific clients
 io.on('connection', function(socket) {
-    chat.connect(socket, io, newUser);
-    console.log(newUser);
+    let rooms = database.getRoom();
+    chat.connect(socket, io, newUser, rooms);
+    
     socket.on('message', function(data) {
         console.log('Message Sent');
         chat.message(socket, io, data);

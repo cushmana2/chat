@@ -92,32 +92,19 @@ exports.getUser = function(uName, pWord, res) {
 //test
 //getUser(pool, "Tonydags", "12345");
 
-//Find a password protected room
+//Get all rooms
 //UPDATE ERROR HANDLING AND FIT INTO MAIN CODE
-function getRoom(connection, rName, pWord) {
-   connection.query("SELECT roomName FROM room WHERE roomName = '" + rName + "';",
-     function(error, results, fields) {
-        if (error) throw err;
-        else {
-           console.log(results[0].roomName);
-           let realrName = results[0].roomName;
-           connection.query("SELECT password FROM room WHERE password = '" + pWord + "';",
-             function(error, results, fields) {
-                if (error) throw error;
-                else {
-                   console.log(results);
-                   let realPass = results[0].password;
-                   if (realrName == rName && realPass == pWord) {
-                      console.log('Room Found Successfully');
-                      //What else?
-                   }
-                   else {
-                      console.log('Invalid Room name/password');
-                   } //else
-                } //else
-             }); //query 2
-        } //else
-     }); //query
+exports.getRoom = function() {
+   pool.getConnection(function(err, connection) {
+      connection.query("SELECT roomName FROM room;",
+      function(error, results, fields) {
+         if (error) throw err;
+         else {
+            console.log(results);
+            return results;
+         } //else
+      }); //query
+   });
 }; //overall function
 
 

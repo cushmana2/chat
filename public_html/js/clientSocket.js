@@ -7,6 +7,7 @@ let roomlist = document.getElementById('room');
 
 socket.on('connection', function(data) {
     updateUser(data, socket);
+    updateRoom(data, socket);
 });
 
 socket.on('userJoin', function(data) {
