@@ -71,7 +71,7 @@ exports.message = function (socket, io, data) {
     mentionedUser = connections[userIndex];
     io.in(room).emit('chatUpdate', {
         update: conn.name + ': ' +data,
-	mention: mentionedUser.id
+	    mention: mentionedUser.id
     });
 }
 
