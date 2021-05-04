@@ -1,10 +1,12 @@
 const socket = io('35.239.56.176:80');
 
+//frequently used elements
 let chatBox = document.getElementById('chatBox');
 let userBox = document.getElementById('userBox');
 let form = document.getElementById('addRoomForm');
 let roomlist = document.getElementById('room');
 
+//socket events are sent to handlers
 socket.on('connection', function(data) {
     updateUser(data, socket);
     updateRoom(data);
@@ -33,21 +35,25 @@ socket.on('disconnection', function(data) {
     removeUser(data);
 });
 
+socket.on('roomFail', function(data) {
+    alert(data.message);
+});
+
+//adds new rooms to room dropdown, keeps default room
 function updateRoom(data) {
     let rooms = data.roomlist;
     console.log(rooms);
     if(rooms) {
     Array.from(roomlist.children).forEach(room => {
-	console.log(room)
-	console.log(room.value);
         if(room.value != 'default'){
-	room.remove();
+	    room.remove();
 	}
     });
     Array.from(rooms).forEach(room => {
         newroom = document.createElement('option');
-	newroom.value = room;
-	newroom.innerHTML = room;
+	newroom.value = room.name;
+	newroom.innerHTML = room.name;
+	newroom.setAttribute('data-vis', room.vis);
 	roomlist.appendChild(
 	    newroom
         );
@@ -143,9 +149,25 @@ function removeUser(data) {
 
 function changeRoom(event) {
     roomName = event.target.value;
-    socket.emit('changeRoom', {
-        room : roomName
+    let option = '';
+    Array.from(event.target.children).forEach(child => {
+    	if(child.value == roomName){
+	    option = child;
+	}
     });
+    if(option.dataset.vis == 'private'){
+        let pass = window.prompt('Enter Password for '+roomName);
+	socket.emit('changeRoom', {
+	    room: roomName,
+	    password : pass
+	});
+    }
+    else {
+        socket.emit('changeRoom', {
+            room : roomName,
+    	    password : 'none'
+    });
+    }
 }
 
 //generates form with inputs to add a room
@@ -225,7 +247,7 @@ function processRoom() {
         socket.emit('addRoom', {
             name : name.value,
             vis: 'public',
-            pass: 'None'
+            pass: 'none'
         });
 	console.log('adding room');
         //clear form

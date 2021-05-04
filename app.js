@@ -25,6 +25,9 @@ const httpServer = http.createServer(function (req, res) {
         }
     }
 
+    //handling login/registration through post requests
+    //login is fake and awful, since the database takes a while
+    //it has to wait. also sends multiple requests for some reason
     if (req.method == 'POST') {
         let reqBody = '';
         req.on('data', data => {reqBody += data});
@@ -68,7 +71,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('addRoom', function(data) {
-        console.log('add room');
 	database.createRoom(data.name, data.pass);
         chat.updateRoom(socket, io, data);
     });
