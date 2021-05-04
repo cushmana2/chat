@@ -1,10 +1,15 @@
 const socket = io('35.239.56.176:80');
 
+//frequently used elements
 let chatBox = document.getElementById('chatBox');
 let userBox = document.getElementById('userBox');
+let form = document.getElementById('addRoomForm');
+let roomlist = document.getElementById('room');
 
+//socket events are sent to handlers
 socket.on('connection', function(data) {
     updateUser(data, socket);
+    updateRoom(data);
 });
 
 socket.on('userJoin', function(data) {
@@ -21,10 +26,40 @@ socket.on('changeRoom', function(data) {
     updateUser(data);
 });
 
+socket.on('updateRoom', function(data) {
+    updateRoom(data);
+})
+
 //updates chat room with notice upon disconnection
 socket.on('disconnection', function(data) {
     removeUser(data);
 });
+
+socket.on('roomFail', function(data) {
+    alert(data.message);
+});
+
+//adds new rooms to room dropdown, keeps default room
+function updateRoom(data) {
+    let rooms = data.roomlist;
+    console.log(rooms);
+    if(rooms) {
+    Array.from(roomlist.children).forEach(room => {
+        if(room.value != 'default'){
+	    room.remove();
+	}
+    });
+    Array.from(rooms).forEach(room => {
+        newroom = document.createElement('option');
+	newroom.value = room.name;
+	newroom.innerHTML = room.name;
+	newroom.setAttribute('data-vis', room.vis);
+	roomlist.appendChild(
+	    newroom
+        );
+    });
+}
+}
 
 
 //event handler for send message button
@@ -105,11 +140,8 @@ function removeUser(data) {
 
     let userList = userBox.getElementsByTagName('li');
     Array.from(userList).forEach(user => {
-	console.log(data.name);
-	console.log(user.innerHTML);
         if (data.name == user.innerHTML)
-	{ 
-	    console.log('removed');
+        {
             user.remove();
         }
     });
@@ -117,11 +149,115 @@ function removeUser(data) {
 
 function changeRoom(event) {
     roomName = event.target.value;
-    socket.emit('changeRoom', {
-        room : roomName
+    let option = '';
+    Array.from(event.target.children).forEach(child => {
+    	if(child.value == roomName){
+	    option = child;
+	}
     });
+    if(option.dataset.vis == 'private'){
+        let pass = window.prompt('Enter Password for '+roomName);
+	socket.emit('changeRoom', {
+	    room: roomName,
+	    password : pass
+	});
+    }
+    else {
+        socket.emit('changeRoom', {
+            room : roomName,
+    	    password : 'none'
+    });
+    }
 }
 
+//generates form with inputs to add a room
+//sends room information to server through socket
+function addRoom() {
+    //generating form fields
+    let formDiv = document.getElementById('addRoomForm');
+    formDiv.setAttribute('style', 'text-align: center;');
+
+    let fields = [];
+    
+    let name = document.createElement('input');
+    name.setAttribute('placeholder', 'Room Name');
+    name.type = 'text';
+    name.id = 'name';
+    fields.push(name);
+
+    let visibility = document.createElement('input');
+    let label = document.createElement('label');
+    visibility.type = 'checkbox';
+    visibility.id = 'visibility';
+    label.setAttribute('for', 'visibility');
+    label.innerHTML = 'Private?';
+    fields.push(label);
+    fields.push(visibility);
+    
+
+    let password = document.createElement('input');
+    password.setAttribute('placeholder', 'Password (if private)');
+    password.type = 'text';
+    password.id = 'password';
+    fields.push(password);
+
+    let sub = document.createElement('button');
+    sub.type = 'button';
+    sub.innerHTML = 'Add Room';
+    fields.push(sub);
+
+    Array.from(fields).forEach(field => {
+        formDiv.appendChild(
+            field
+        );
+        formDiv.appendChild(
+            document.createElement('br')
+        );
+    });
+
+    sub.addEventListener('click', processRoom);
+}
+
+//handling submission of add room
+//grabs field information, emits to server, and removes form from user's display
+function processRoom() {
+    let name = document.getElementById('name');
+    let vis = document.getElementById('visibility');
+    let pass = document.getElementById('password');
+
+    //if private is checked, make sure there is a password
+    //otherwise, ignore password
+    if (vis.checked) {
+        if (pass.value){
+            socket.emit('addRoom', {
+                name : name.value,
+                vis : 'private',
+                pass : pass.value
+            });
+            //clear form
+            Array.from(form.children).forEach (element => {
+            element.remove();
+            });
+        }
+        else {
+            alert('Password must be entered to create private room');
+        } 
+    }
+    else {
+        socket.emit('addRoom', {
+            name : name.value,
+            vis: 'public',
+            pass: 'none'
+        });
+	console.log('adding room');
+        //clear form
+        Array.from(form.children).forEach (element => {
+        element.remove();
+        });
+    }
+
+}
 
 document.getElementById('sendMsg').addEventListener('click', sendMsg);
 document.getElementById('room').addEventListener('change', changeRoom);
+document.getElementById('roomBtn').addEventListener('click', addRoom);
