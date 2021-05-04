@@ -3,7 +3,7 @@ const socket = io('35.239.56.176:80');
 let chatBox = document.getElementById('chatBox');
 let userBox = document.getElementById('userBox');
 let form = document.getElementById('addRoomForm');
-let roomlist = document.getElementById('rooms');
+let roomlist = document.getElementById('room');
 
 socket.on('connection', function(data) {
     updateUser(data, socket);
@@ -121,6 +121,7 @@ function removeUser(data) {
 function updateRoom(data) {
     let newRoom = document.createElement('option');
     newRoom.value = data.name;
+    newRoom.innerHTML = data.name;
     newRoom.setAttribute('data-visibility', data.vis);
     roomlist.appendChild(
         newRoom
@@ -189,9 +190,9 @@ function processRoom() {
     if (vis.checked) {
         if (pass.value){
             socket.emit('addRoom', {
-                name : name,
+                name : name.value,
                 vis : 'private',
-                pass : pass
+                pass : pass.value
             });
             //clear form
             Array.from(form.children).forEach (element => {
@@ -204,7 +205,7 @@ function processRoom() {
     }
     else {
         socket.emit('addRoom', {
-            name : name,
+            name : name.value,
             vis: 'public',
             pass: 'None'
         });
