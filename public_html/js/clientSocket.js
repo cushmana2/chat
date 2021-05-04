@@ -105,8 +105,11 @@ function removeUser(data) {
 
     let userList = userBox.getElementsByTagName('li');
     Array.from(userList).forEach(user => {
+	console.log(data.name);
+	console.log(user.innerHTML);
         if (data.name == user.innerHTML)
-        {
+	{ 
+	    console.log('removed');
             user.remove();
         }
     });

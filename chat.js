@@ -61,7 +61,8 @@ exports.changeRoom = function(socket, io, data) {
     //update users in old room
     io.in(oldRoom).emit('disconnection' , {
         message: 'Notice: '+conn.name+' has disconnected',
-        user: conn.id
+        user: conn.id,
+	name: conn.name
     });
 
     socket.join(data.room);
