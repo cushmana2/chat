@@ -104,7 +104,6 @@ exports.getRoom = function(res) {
             res.writeHead(200, {'Content-Type' : 'application/json'});
             res.write(JSON.stringify(results));
             res.end();
-            connection.release();
          } //else
       }); //query
    });
