@@ -94,14 +94,17 @@ exports.getUser = function(uName, pWord, res) {
 
 //Get all rooms
 //UPDATE ERROR HANDLING AND FIT INTO MAIN CODE
-exports.getRoom = function() {
+exports.getRoom = function(res) {
    pool.getConnection(function(err, connection) {
       connection.query("SELECT roomName FROM room;",
       function(error, results, fields) {
          if (error) throw err;
          else {
             console.log(results);
-            return results;
+            res.writeHead(200, {'Content-Type' : 'application/json'});
+            res.write(JSON.stringify(results));
+            res.end();
+            connection.release();
          } //else
       }); //query
    });

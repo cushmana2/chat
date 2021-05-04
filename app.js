@@ -19,6 +19,9 @@ const httpServer = http.createServer(function (req, res) {
             case "/chat":
                 fileServer.readFile("public_html/demo.html", res);
                 break;
+            case "/database":
+                database.getRoom(res);
+                break;
             default:
                 fileServer.readFile("public_html"+path, res);
                 break;

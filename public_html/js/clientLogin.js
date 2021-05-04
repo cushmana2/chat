@@ -47,5 +47,29 @@ function register() {
     AJAX.send(JSON.stringify(registerdata));
 }
 
+function database() {
+    let AJAX = newXMLHttpRequest();
+    AJAX.onerror = function() {
+        alert('Error getting rooms');
+    }
+    AJAX.onload = function() {
+        if(this.status == 200) {
+            let roomlist = document.getElementById('room');
+            r = JSON.parse(this.responseText);
+            r.forEach(room => {
+                let option = document.createElement('option');
+                option.innerHTML = room['roomName'];
+                option.value = room['roomName'];
+                roomlist.appendChild(
+                    option
+                );
+            });
+        }
+    }
+    AJAX.open('GET', '/database');
+    AJAX.send();
+}
+
 document.getElementById('registerBtn').addEventListener('click', register);
 document.getElementById('loginBtn').addEventListener('click', login);
+window.addEventListener('onload', database);
