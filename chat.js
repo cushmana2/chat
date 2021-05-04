@@ -59,7 +59,7 @@ exports.message = function (socket, io, data) {
     let index = connections.findIndex(i => (i.id == socket.id));
     conn = connections[index];
     room = Array.from(socket.rooms)[1];
-    let mentionUser = '';
+    let mentionedUser = '';
     let msgArr = data.split(" ");
     for(let i=0; i<msgArr.length; i++) {
         if(msgArr[i][0] == '@') {

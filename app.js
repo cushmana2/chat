@@ -11,7 +11,7 @@ let newUser = '';
 const httpServer = http.createServer(function (req, res) {
     let urlObj = new URL(req.url, VM_IP);
     path = urlObj.pathname;
-    console.log(path);
+    console.log('app.js pathname: ' + path);
     if (req.method == 'GET') {
         switch(path) {
             case "/":
@@ -61,9 +61,9 @@ io = socketio(httpServer);
 //the socket object within is used for specific clients
 io.on('connection', function(socket) {
     chat.connect(socket, io, newUser);
-    
+    console.log('app.js: ' + newUser);
     socket.on('message', function(data) {
-        console.log('Message Sent');
+        console.log('app.js: Message Sent');
         chat.message(socket, io, data);
     });
 
