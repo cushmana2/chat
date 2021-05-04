@@ -119,14 +119,6 @@ function changeRoom(event) {
     });
 }
 
-function sendPic() {
-    let newPic = document.createElement('input');
-    newPic.type = 'file';
-    newPic.setAttribute('accept', 'image/png');
-    let select = newPic.click();
-    console.log(select);
-}
 
 document.getElementById('sendMsg').addEventListener('click', sendMsg);
 document.getElementById('room').addEventListener('change', changeRoom);
-document.getElementById('sendPic').addEventListener('click', sendPic);
