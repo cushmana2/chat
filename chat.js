@@ -32,7 +32,8 @@ exports.disconnect = function (socket, io) {
     room = Array.from(socket.rooms)[1];
     io.in(room).emit('disconnection' , {
         message: 'Notice: '+conn.name+' has disconnected',
-        user: socket.id
+        user: socket.id,
+	name: conn.name
     });
     let index = connections.findIndex(i => (i.room == room && i.id == socket.id));
     connections.splice(index, 1);
@@ -61,7 +62,8 @@ exports.changeRoom = function(socket, io, data) {
     //update users in old room
     io.in(oldRoom).emit('disconnection' , {
         message: 'Notice: '+conn.name+' has disconnected',
-        user: conn.id
+        user: conn.id,
+	name: conn.name
     });
 
     socket.join(data.room);
