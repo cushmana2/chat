@@ -123,6 +123,12 @@ function addMessage(data) {
     let newMsg = document.createElement('li');
     newMsg.innerHTML = data.update;
     newMsg.className = 'list-group';
+
+    //mentions
+    if (data.mention == myUserName) {
+        newMsg.style.background-color = "yellow";
+    }
+
     chatBox.appendChild(
         newMsg
     );

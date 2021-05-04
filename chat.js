@@ -59,8 +59,19 @@ exports.message = function (socket, io, data) {
     let index = connections.findIndex(i => (i.id == socket.id));
     conn = connections[index];
     room = Array.from(socket.rooms)[1];
+
+    //Check message for a mention
+    let mentionedUser = '';
+    let msgArr = data.split(" ");
+    for (let i=0; i<msgArr.length; i++) {
+        if (msgArr[i][0] == '@') {
+            mentionedUser = msgArr[i].slice(1);
+        }
+    }
+
     io.in(room).emit('chatUpdate', {
-        update: conn.name + ': ' +data
+        update: conn.name + ': ' +data,
+        mention: mentionedUser
     });
 }
 
