@@ -1,4 +1,4 @@
-const VM_IP = 'http://localhost';
+const VM_IP = 'http://35.239.56.176';
 const http = require('http');
 const socketio = require('socket.io');
 const fileServer = require('./fileServer.js');
