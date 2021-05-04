@@ -1,4 +1,4 @@
-const VM_IP = 'http://35.239.56.176';
+const VM_IP = 'http://localhost';
 const http = require('http');
 const socketio = require('socket.io');
 const fileServer = require('./fileServer.js');
@@ -65,6 +65,11 @@ io.on('connection', function(socket) {
 
     socket.on('changeRoom', function(data) {
         chat.changeRoom(socket, io, data);
+    })
+
+    socket.on('addRoom', function(data) {
+        database.createRoom(data.name, data.pass);
+        chat.updateRoom(socket, io, data);
     })
 
     socket.on('disconnecting', function() {

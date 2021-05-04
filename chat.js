@@ -62,7 +62,7 @@ exports.changeRoom = function(socket, io, data) {
     io.in(oldRoom).emit('disconnection' , {
         message: 'Notice: '+conn.name+' has disconnected',
         user: conn.id,
-	name: conn.name
+        name: conn.name
     });
 
     socket.join(data.room);
@@ -75,9 +75,17 @@ exports.changeRoom = function(socket, io, data) {
     io.in(data.room).emit('userJoin', {
         message: 'Notice: ' + conn.name +' has joined the chat room',
         user : conn.id,
-	name : conn.name
+	    name : conn.name
     });
-    
+}
+
+//emits newly added room to all clients
+exports.updateRoom = function(socket, io, data) {
+    io.emit('updateRoom', {
+        name : data.name,
+        vis : data.vis,
+        pass : data.pass
+    });
 }
 
 //split off from connection event because of room changes

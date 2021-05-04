@@ -34,15 +34,18 @@ exports.createUser = function(uName, pWord, res) {
 }; //overall function
 
 //Takes a room name and password plus db connection, inserts into db
-function createRoom(connection, rName, pWord) {
-   connection.query("INSERT INTO room(roomName, password) VALUES ('" + rName + "' , '" + pWord + "');",
-      function(error, results, fields) {
-         if (error) throw error;
-         else {
-            console.log('Room Creation Successful!');
-            //connection.end(); need this?
-         } //else
-      }); //query function
+exports.createRoom = function(rName, pWord) {
+   pool.getConnection(function(err, connection) {
+      connection.query("INSERT INTO room(roomName, password) VALUES ('" + rName + "' , '" + pWord + "');",
+         function(error, results, fields) {
+            if (error) throw error;
+            else {
+               console.log('Room Creation Successful!');
+               connection.release();
+               //connection.end(); need this?
+            } //else
+         }); //query function
+   });
 }; //function
 
 //Tests
