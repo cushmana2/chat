@@ -89,35 +89,52 @@ exports.getUser = function(uName, pWord, res) {
    });
 }; //overall function
 
+
+exports.checkRoomPass = function(roomName, pWord, res) {
+   pool.getConnection(function(err, connection) {
+      connection.query("SELECT password FROM room WHERE roomName = '" + roomName + "';",
+      function(error, results, fields) {
+         if (error) throw error;
+         else {
+            console.log(results[0]);
+            let realPass = results[0].password;
+            if(pWord == realPass){
+               console.log('Login Succesful!');
+               res.writeHead(200, {'Content-Type': 'text/plaintext'});
+               res.write('Login Success');
+               res.end();
+               connection.release();
+            }
+            else {
+               console.log('Incorrect username or password')
+               res.writeHead(400, {'Content-Type': 'text/plaintext'});
+               res.write('Login Failure: Bad Credentials');
+               res.end();
+               connection.release();
+            } //else
+         } //else
+      }); //query function
+   });
+}; //overall function
+
 //test
 //getUser(pool, "Tonydags", "12345");
 
-//Find a password protected room
+//Get all rooms (doesn't work?)
 //UPDATE ERROR HANDLING AND FIT INTO MAIN CODE
-function getRoom(connection, rName, pWord) {
-   connection.query("SELECT roomName FROM room WHERE roomName = '" + rName + "';",
-     function(error, results, fields) {
-        if (error) throw err;
-        else {
-           console.log(results[0].roomName);
-           let realrName = results[0].roomName;
-           connection.query("SELECT password FROM room WHERE password = '" + pWord + "';",
-             function(error, results, fields) {
-                if (error) throw error;
-                else {
-                   console.log(results);
-                   let realPass = results[0].password;
-                   if (realrName == rName && realPass == pWord) {
-                      console.log('Room Found Successfully');
-                      //What else?
-                   }
-                   else {
-                      console.log('Invalid Room name/password');
-                   } //else
-                } //else
-             }); //query 2
-        } //else
-     }); //query
+/*exports.getRoom = function(res) {
+   pool.getConnection(function(err, connection) {
+      connection.query("SELECT roomName FROM room;",
+      function(error, results, fields) {
+         if (error) throw err;
+         else {
+            console.log(results);
+            res.writeHead(200, {'Content-Type' : 'application/json'});
+            res.write(JSON.stringify(results));
+            res.end();
+         } //else
+      }); //query
+   });
 }; //overall function
-
+*/
 

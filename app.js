@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const VM_IP = 'http://35.239.56.176';
+=======
+const VM_IP = 'http://34.123.119.12';
+>>>>>>> de11c4f23a70c19aa3fab0a775860240c73e8472
 const http = require('http');
 const socketio = require('socket.io');
 const fileServer = require('./fileServer.js');
@@ -25,6 +29,9 @@ const httpServer = http.createServer(function (req, res) {
         }
     }
 
+    //handling login/registration through post requests
+    //login is fake and awful, since the database takes a while
+    //it has to wait. also sends multiple requests for some reason
     if (req.method == 'POST') {
         let reqBody = '';
         req.on('data', data => {reqBody += data});
@@ -37,9 +44,9 @@ const httpServer = http.createServer(function (req, res) {
             case "/login":
                 l = JSON.parse(reqBody);
                 setTimeout(function() {
-		    database.getUser(l.username, l.password, res);
-		}, 2000);
-		newUser = l.username;
+		        database.getUser(l.username, l.password, res);
+		        }, 2000);
+		        newUser = l.username;
                 break;
             default:
                 break;
@@ -57,7 +64,7 @@ io = socketio(httpServer);
 //the socket object within is used for specific clients
 io.on('connection', function(socket) {
     chat.connect(socket, io, newUser);
-    console.log(newUser);
+    
     socket.on('message', function(data) {
         console.log('Message Sent');
         chat.message(socket, io, data);
@@ -65,12 +72,12 @@ io.on('connection', function(socket) {
 
     socket.on('changeRoom', function(data) {
         chat.changeRoom(socket, io, data);
-    })
+    });
 
     socket.on('addRoom', function(data) {
-        database.createRoom(data.name, data.pass);
+	database.createRoom(data.name, data.pass);
         chat.updateRoom(socket, io, data);
-    })
+    });
 
     socket.on('disconnecting', function() {
         chat.disconnect(socket, io);

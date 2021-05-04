@@ -5,7 +5,22 @@ const sock = {
     name : ''
 };
 
+//object to keep track of room data, stays active only for as
+//long as the application is running
+//was having trouble with getting database info, next would be
+//to actually write these to the database like we had planned
+const r = {
+    name : '',
+    vis : '',
+    pass : ''
+};
+
+//arrays to store the objects above
+//these arrays will get filtered for certain functions
 let connections = [];
+let rooms = [];
+
+//variable and function for finding objects in the two arrays above
 let index = '';
 
 function getConnection(socket) {
@@ -49,6 +64,8 @@ exports.message = function (socket, io, data) {
     });
 }
 
+//handles room changes, logs user out of room and joins new one
+//if the room to be joined has a password, validates before joining
 exports.changeRoom = function(socket, io, data) {
     //update sock object room and update with new room
     let index = connections.findIndex(i => (i.id == socket.id));
@@ -56,35 +73,57 @@ exports.changeRoom = function(socket, io, data) {
     oldRoom = conn.room;
 
     socket.leave(oldRoom);
-    conn.room = data.room;
+    let r = rooms.findIndex(i => (i.name == data.room));
+    let target = rooms[r];
+    if(typeof(target) == 'undefined' && data.room == 'default'){
+        let defaultRoom = Object.create(r);
+	defaultRoom.name = 'default';
+	defaultRoom.vis = 'public';
+	defaultRoom.pass = 'none';
+	rooms.push(def);
+	target = defaultRoom;
+    }
+    console.log('Target room: ' + target);
+    //if password is correct, join new room and alert users
+    if(target.pass == data.password || data.room == 'default') {
+        conn.room = data.room;
+	socket.join(data.room);
+	filteredConnections = connections.filter(connection => (connection.room == data.room));
+	
+	socket.emit('changeRoom', {
+	    userList : filteredConnections,
+	    room : data.room
+	});
+	//user introduction to other users
+	io.in(data.room).emit('userJoin', {
+	    message : 'Notice: ' + conn.name + ' has joined the chat room',
+	    user : conn.id,
+	    name : conn.name
+	});
+    }
+    else {
+        socket.emit('roomFail', {
+	    message : 'Invalid password for room.'
+        });
+    }
     
     //update users in old room
     io.in(oldRoom).emit('disconnection' , {
         message: 'Notice: '+conn.name+' has disconnected',
         user: conn.id,
         name: conn.name
-    });
-
-    socket.join(data.room);
-    filteredConnections = connections.filter(connection => (connection.room == data.room));
-    socket.emit('changeRoom' , {
-        userList : filteredConnections,
-        room : data.room
-    });
-    //User introduction to other users
-    io.in(data.room).emit('userJoin', {
-        message: 'Notice: ' + conn.name +' has joined the chat room',
-        user : conn.id,
-	    name : conn.name
-    });
+        });
 }
 
 //emits newly added room to all clients
 exports.updateRoom = function(socket, io, data) {
+    let newRoom = Object.create(r);
+    newRoom.name = data.name;
+    newRoom.vis = data.vis;
+    newRoom.pass = data.pass;
+    rooms.push(newRoom);
     io.emit('updateRoom', {
-        name : data.name,
-        vis : data.vis,
-        pass : data.pass
+        roomlist : rooms
     });
 }
 
@@ -95,6 +134,7 @@ function roomJoin(socket, room, io, name) {
     filteredConnections = connections.filter(connection => (connection.room == room));
     socket.emit('connection' , {
         userList : filteredConnections,
+	roomlist : rooms,
         room : room
     });
     //User introduction to other users
