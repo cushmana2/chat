@@ -123,6 +123,11 @@ function addMessage(data) {
     let newMsg = document.createElement('li');
     newMsg.innerHTML = data.update;
     newMsg.className = 'list-group';
+    console.log(data.mention);
+    console.log(socket.id);
+    if(data.mention == socket.id){
+        newMsg.style.backgroundColor = 'yellow';
+    }
     chatBox.appendChild(
         newMsg
     );

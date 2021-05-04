@@ -1,8 +1,5 @@
-<<<<<<< HEAD
+
 const VM_IP = 'http://35.239.56.176';
-=======
-const VM_IP = 'http://34.123.119.12';
->>>>>>> de11c4f23a70c19aa3fab0a775860240c73e8472
 const http = require('http');
 const socketio = require('socket.io');
 const fileServer = require('./fileServer.js');
