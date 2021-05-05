@@ -69,10 +69,20 @@ exports.message = function (socket, io, data) {
     console.log(mentionedUser);
     let userIndex = connections.findIndex(i => i.name == mentionedUser);
     mentionedUser = connections[userIndex];
-    io.in(room).emit('chatUpdate', {
-        update: conn.name + ': ' +data,
+    if (mentionedUser === undefined) {
+        console.log('chat.js  No mentioned user');
+        io.in(room).emit('chatUpdate', {
+            update: conn.name + ': ' + data,
+            mention: 'none'
+        });
+    }
+    else {
+        console.log('chat.js Mentioned User: ' + mentionedUser);
+        io.in(room).emit('chatUpdate', {
+            update: conn.name + ': ' +data,
 	    mention: mentionedUser.id
-    });
+        });
+    }
 }
 
 //handles room changes, logs user out of room and joins new one

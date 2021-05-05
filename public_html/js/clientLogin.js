@@ -1,5 +1,5 @@
 
-const VM_IP = '35.239.56.176';
+const VM_IP = '34.75.120.250';
 
 //this is awful but for some reason I'm having trouble redirecting with http requests
 //grabs the login information from the form, then sends it to the server to process

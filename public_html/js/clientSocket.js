@@ -1,4 +1,4 @@
-const socket = io('35.239.56.176:80');
+const socket = io('34.75.120.250');
 
 //frequently used elements
 let chatBox = document.getElementById('chatBox');
