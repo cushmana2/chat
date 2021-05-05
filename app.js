@@ -18,7 +18,7 @@ const httpServer = http.createServer(function (req, res) {
                 fileServer.readFile("public_html/index.html", res);
                 break;
             case "/chat":
-                fileServer.readFile("public_html/demo.html", res);
+                fileServer.readFile("public_html/chat.html", res);
                 break;
             default:
                 fileServer.readFile("public_html"+path, res);
