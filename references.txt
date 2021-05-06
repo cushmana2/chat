@@ -1,0 +1,9 @@
+Socket.IO documentation - https://socket.io/docs/v3/ 
+
+Various W3schools pages - https://www.w3schools.com/ 
+
+Various MDN WebDocs pages - https://developer.mozilla.org/en-US/docs/Web 
+
+mySQL package - https://github.com/mysqljs/mysql 
+
+Configuring Google Cloud Database - https://cloud.google.com/sql/docs/mysql 
