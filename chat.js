@@ -94,14 +94,14 @@ exports.changeRoom = function(socket, io, data) {
     oldRoom = conn.room;
 
     socket.leave(oldRoom);
-    let r = rooms.findIndex(i => (i.name == data.room));
-    let target = rooms[r];
+    let rIndex = rooms.findIndex(i => (i.name == data.room));
+    let target = rooms[rIndex];
     if(typeof(target) == 'undefined' && data.room == 'default'){
-        let defaultRoom = Object.create(r);
+	let defaultRoom = Object.create(r);
 	defaultRoom.name = 'default';
 	defaultRoom.vis = 'public';
 	defaultRoom.pass = 'none';
-	rooms.push(def);
+	rooms.push(defaultRoom);
 	target = defaultRoom;
     }
     console.log('Target room: ' + target);
